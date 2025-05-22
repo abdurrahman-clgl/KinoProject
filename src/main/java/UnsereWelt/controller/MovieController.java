@@ -1,8 +1,10 @@
 package UnsereWelt.controller;
 
 
+import UnsereWelt.dto.MovieDto;
 import UnsereWelt.entity.Movie;
 import UnsereWelt.service.MovieService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +20,15 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-
-    @GetMapping("/movies")
-    public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+    @GetMapping
+    public ResponseEntity<List<MovieDto>> getAllMovies() {
+        return ResponseEntity.ok(movieService.getAllMovies());
     }
+
+
+
+
+   /*
 
     @GetMapping("/{id}")
     public Movie getMovieById(@PathVariable Long id) {
@@ -43,7 +49,7 @@ public class MovieController {
    // @PostMapping
    // public Movie add
 
-
+    */
 //Mapper
     //MapStruct
     //ModellMapper

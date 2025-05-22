@@ -1,6 +1,8 @@
 package UnsereWelt.service;
 
+import UnsereWelt.dto.MovieDto;
 import UnsereWelt.entity.Movie;
+import UnsereWelt.mapper.MovieMapper;
 import UnsereWelt.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +17,24 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+
+    public List<MovieDto> getAllMovies() {
+    return this.movieRepository.findAll().stream()
+            .map(MovieMapper::toDto).toList();
+
     }
 
-    public Movie getMovieById(Long id) {
-        return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie with ID " + id + " not found"));
-    }
+
+     public MovieDto getMovieById(Long id) {
+        return MovieMapper.toDto(movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie with ID " + id + " not found")));
+     }
 
 
-    public List<Movie> getMoviesByGenre(String genre) {
-        List<Movie> filtered = movieRepository.findAll().stream()
-                .filter(movie -> movie.getGenre().equalsIgnoreCase(genre)).toList();
+    public List<MovieDto> getMoviesByGenre(String genre) {
+        List<MovieDto> filtered = movieRepository.findAll().stream()
+                .filter(movie -> movie.getGenre().equalsIgnoreCase(genre))
+                .map(MovieMapper::toDto).toList();
+
         if (filtered.isEmpty()) {
             throw new RuntimeException("No movies found for genre " + genre);
 
@@ -34,10 +42,11 @@ public class MovieService {
         return filtered;
 
     }
-    public List<Movie> getMoviesByTitle(String title) {
-        List<Movie> filtered = movieRepository.findAll().stream()
+    public List<MovieDto> getMoviesByTitle(String title) {
+        List<MovieDto> filtered = movieRepository.findAll().stream()
                 .filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase()))
-                .toList();
+                .map(MovieMapper::toDto).toList();
+
         if (filtered.isEmpty()) {
             throw new RuntimeException("No movies found for title " + title);
         }
@@ -46,44 +55,56 @@ public class MovieService {
 
     //Admin Method
 
-    public Movie addMovie(Movie movie) {
-        if (movie.getTitle() == null || movie.getTitle().isBlank()) {
+    public MovieDto addMovie(MovieDto dto) {
+        // 1. Validierung auf DTO-Ebene
+        if (dto.getTitle() == null || dto.getTitle().isBlank()) {
             throw new RuntimeException("Title must not be empty");
         }
-        if (movie.getReleaseDate() == null) {
+
+        if (dto.getReleaseDate() == null) {
             throw new RuntimeException("Release date must not be null");
         }
-        boolean exists = movieRepository.findAll().stream().anyMatch(existingMovie -> existingMovie.getTitle().equals(movie.getTitle()));
+
+        boolean exists = movieRepository.findAll().stream()
+                .anyMatch(m -> m.getTitle().equalsIgnoreCase(dto.getTitle()));
+
         if (exists) {
-            throw new RuntimeException("Movie with title " + movie.getTitle() + " already exists");
+            throw new RuntimeException("Movie with title " + dto.getTitle() + " already exists");
         }
-        return movieRepository.save(movie);
+        Movie movieToSave = MovieMapper.toEntity(dto);
+        Movie savedMovie = movieRepository.save(movieToSave);
+
+
+        return MovieMapper.toDto(savedMovie);
     }
-
-
 
     //Admin Method
-    public Movie updateMovie(Movie movie) {
-        if (movie.getTitle() == null || movie.getTitle().isBlank()) {
+    public MovieDto updateMovie(Long id, MovieDto dto) {
+        if (dto.getTitle() == null || dto.getTitle().isBlank()) {
             throw new RuntimeException("Title must not be empty");
         }
-        if (movie.getReleaseDate() == null) {
+
+        if (dto.getReleaseDate() == null) {
             throw new RuntimeException("Release date must not be null");
         }
-        Movie existing = movieRepository.findById(movie.getId()).orElseThrow(()
-                -> new RuntimeException("Movie with ID " + movie.getId() + " not found"));
 
-        existing.setTitle(movie.getTitle());
-        existing.setDescription(movie.getDescription());
-        existing.setReleaseDate(movie.getReleaseDate());
-        existing.setGenre(movie.getGenre());
-        existing.setLanguage(movie.getLanguage());
-        existing.setImageUrl(movie.getImageUrl());
-        existing.setAgeRating(movie.getAgeRating());
+        Movie existing = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie with ID " + id + " not found"));
 
 
-        return movieRepository.save(existing);
+        existing.setTitle(dto.getTitle());
+        existing.setDescription(dto.getDescription());
+        existing.setReleaseDate(dto.getReleaseDate());
+        existing.setGenre(dto.getGenre());
+        existing.setLanguage(dto.getLanguage());
+        existing.setImageUrl(dto.getImageUrl());
+        existing.setAgeRating(dto.getAgeRating());
+
+        Movie updated = movieRepository.save(existing);
+
+        return MovieMapper.toDto(updated);
     }
+
 
 
     //Admin Method
