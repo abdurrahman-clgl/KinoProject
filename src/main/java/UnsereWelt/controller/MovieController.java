@@ -2,7 +2,7 @@ package UnsereWelt.controller;
 
 
 import UnsereWelt.entity.Movie;
-import UnsereWelt.security.MovieService;
+import UnsereWelt.service.MovieService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,32 +21,32 @@ public class MovieController {
 
     @GetMapping("/movies")
     public List<Movie> getAllMovies() {
-       return movieService.getAllMovies();
+        return movieService.getAllMovies();
     }
 
     @GetMapping("/{id}")
-    public Movie getMovieById(@PathVariable Long id){
+    public Movie getMovieById(@PathVariable Long id) {
         return movieService.getMovieById(id);
     }
 
     @GetMapping("/search/{title}")
-    public List<Movie> getMoviesByTitle(@PathVariable String title){
+    public List<Movie> getMoviesByTitle(@PathVariable String title) {
         return movieService.getMoviesByTitle(title);
     }
+
     @GetMapping("/search/genre/{genre}")
-    public List<Movie> getMoviesByGenre(@PathVariable String genre){
+    public List<Movie> getMoviesByGenre(@PathVariable String genre) {
         return movieService.getMoviesByGenre(genre);
     }
 
-    @PostMapping
-    public Movie addMovie
+
+   // @PostMapping
+   // public Movie add
 
 
-
-
-
-
-
+//Mapper
+    //MapStruct
+    //ModellMapper
 
 
 }

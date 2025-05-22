@@ -1,4 +1,4 @@
-package UnsereWelt.security;
+package UnsereWelt.service;
 
 import UnsereWelt.entity.Movie;
 import UnsereWelt.repository.MovieRepository;

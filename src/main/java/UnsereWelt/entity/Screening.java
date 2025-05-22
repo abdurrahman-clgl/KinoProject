@@ -1,50 +1,35 @@
 package UnsereWelt.entity;
 
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Screening {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @Column(nullable = false)
     private LocalDate date;
+    @Column(nullable = false)
     private LocalTime startTime;
+    @Column(nullable = false)
     private boolean available;
 
-    public Screening(Movie movie, LocalDate date, LocalTime startTime, boolean available) {
-        this.movie = movie;
-        this.date = date;
-        this.startTime = startTime;
-        this.available = available;
-    }
 
-    public Movie getMovie() {
-        return movie;
-    }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
 
-    public LocalDate getDate() {
-        return date;
-    }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
 }

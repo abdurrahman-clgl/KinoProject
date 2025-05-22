@@ -1,4 +1,4 @@
-package UnsereWelt.security;
+package UnsereWelt.service;
 
 public class ScreeningService {
 }

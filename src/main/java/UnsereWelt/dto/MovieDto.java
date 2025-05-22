@@ -1,101 +1,43 @@
 package UnsereWelt.dto;
 
-
 import UnsereWelt.enums.AgeRating;
+import lombok.*;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class MovieDto {
 
-    private Long id;
+    @NotBlank(message = "Title cannot be blank")
     private String title;
+
+    @NotBlank(message = "Description cannot be blank")
+    @Size(max = 1000, message = "Description must be less than 1000 characters")
     private String description;
+
+    @NotBlank(message = "Genre cannot be blank")
+    @Size(max = 50, message = "Genre must be less than 50 characters")
     private String genre;
+
+    @NotNull(message = "Release date is required")
+    @PastOrPresent(message = "Release date cannot be in the future")
     private LocalDate releaseDate;
+
+    @NotNull(message = "Age rating must be provided")
     private AgeRating ageRating;
+
+    @NotBlank(message = "Language cannot be blank")
+    @Size(max = 50, message = "Language must be less than 50 characters")
     private String language;
+
+    @Size(max = 500, message = "Image URL must be less than 500 characters")
     private String imageUrl;
 
 
-    public MovieDto(Long id, String title, String description, String genre, LocalDate releaseDate, AgeRating ageRating,
-                    String language, String imageUrl) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.genre = genre;
-        this.releaseDate = releaseDate;
-        this.ageRating = ageRating;
-        this.language = language;
-        this.imageUrl = imageUrl;
-    }
-
-
-    public MovieDto() {
-    }
-
-
-    // Getter & Setter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public LocalDate getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public AgeRating getAgeRating() {
-        return ageRating;
-    }
-
-    public void setAgeRating(AgeRating ageRating) {
-        this.ageRating = ageRating;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }
