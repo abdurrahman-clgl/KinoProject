@@ -20,9 +20,10 @@ public class Screening {
     @ManyToOne(optional = false)
     @JoinColumn(name = "movie_id")
     private Movie movie;
-
     @Column(nullable = false)
     private LocalDate date;
+    @Column(nullable = false)
+    private String hall;
     @Column(nullable = false)
     private LocalTime startTime;
     @Column(nullable = false)

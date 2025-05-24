@@ -1,6 +1,7 @@
 package UnsereWelt.dto;
 
 import UnsereWelt.enums.AgeRating;
+import UnsereWelt.enums.Language;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -32,9 +33,9 @@ public class MovieDto {
     @NotNull(message = "Age rating must be provided")
     private AgeRating ageRating;
 
-    @NotBlank(message = "Language cannot be blank")
-    @Size(max = 50, message = "Language must be less than 50 characters")
-    private String language;
+    @NotNull(message = "Language must be provided")
+    private Language language;
+
 
     @Size(max = 500, message = "Image URL must be less than 500 characters")
     private String imageUrl;

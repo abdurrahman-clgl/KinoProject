@@ -1,8 +1,12 @@
 package UnsereWelt.controller;
 
 
-import UnsereWelt.entity.User;
-import UnsereWelt.repository.UserRepository;
+import UnsereWelt.dto.UserDto;
+import UnsereWelt.dto.UserRegistrationDto;
+import UnsereWelt.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,21 +16,23 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(@RequestBody @Valid UserRegistrationDto registrationDto) {
+        UserDto registeredUser = userService.registerUser(registrationDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
     }
 
-
-
-
-
-
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+        return userService.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

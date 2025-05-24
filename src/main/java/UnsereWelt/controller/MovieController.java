@@ -4,12 +4,14 @@ package UnsereWelt.controller;
 import UnsereWelt.dto.MovieDto;
 import UnsereWelt.entity.Movie;
 import UnsereWelt.service.MovieService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
@@ -25,34 +27,39 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getAllMovies());
     }
 
-
-
-
-   /*
-
     @GetMapping("/{id}")
-    public Movie getMovieById(@PathVariable Long id) {
-        return movieService.getMovieById(id);
+    public ResponseEntity<MovieDto> getMovieById(@PathVariable Long id){
+        return ResponseEntity.ok(movieService.getMovieById(id));
+    }
+    @GetMapping("/genre/{genre}")
+    public ResponseEntity<List<MovieDto>> getMoviesByGenre(@PathVariable String genre){
+        return ResponseEntity.ok(movieService.getMoviesByGenre(genre));
+    }
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<MovieDto>> getMoviesByTitle(@PathVariable String title){
+        return ResponseEntity.ok(movieService.getMoviesByTitle(title));
     }
 
-    @GetMapping("/search/{title}")
-    public List<Movie> getMoviesByTitle(@PathVariable String title) {
-        return movieService.getMoviesByTitle(title);
+    @PostMapping()
+    public ResponseEntity<MovieDto> addMovie(@Valid @RequestBody MovieDto dto){
+        MovieDto createdMovie = movieService.addMovie(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
     }
 
-    @GetMapping("/search/genre/{genre}")
-    public List<Movie> getMoviesByGenre(@PathVariable String genre) {
-        return movieService.getMoviesByGenre(genre);
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieDto> updateMovie(@PathVariable Long id, @Valid @RequestBody MovieDto dto){
+        return ResponseEntity.ok(movieService.updateMovie(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable Long id){
+        movieService.deleteMovie(id);
+        return ResponseEntity.noContent().build(); // 204
     }
 
 
-   // @PostMapping
-   // public Movie add
 
-    */
-//Mapper
-    //MapStruct
-    //ModellMapper
+
 
 
 }

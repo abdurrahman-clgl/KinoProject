@@ -2,6 +2,7 @@ package UnsereWelt.service;
 
 import UnsereWelt.dto.MovieDto;
 import UnsereWelt.entity.Movie;
+import UnsereWelt.enums.Genre;
 import UnsereWelt.mapper.MovieMapper;
 import UnsereWelt.repository.MovieRepository;
 import org.springframework.stereotype.Service;
@@ -19,20 +20,20 @@ public class MovieService {
 
 
     public List<MovieDto> getAllMovies() {
-    return this.movieRepository.findAll().stream()
-            .map(MovieMapper::toDto).toList();
+        return this.movieRepository.findAll().stream()
+                .map(MovieMapper::toDto).toList();
 
     }
 
 
-     public MovieDto getMovieById(Long id) {
+    public MovieDto getMovieById(Long id) {
         return MovieMapper.toDto(movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie with ID " + id + " not found")));
-     }
+    }
 
 
     public List<MovieDto> getMoviesByGenre(String genre) {
         List<MovieDto> filtered = movieRepository.findAll().stream()
-                .filter(movie -> movie.getGenre().equalsIgnoreCase(genre))
+                .filter(movie -> movie.getGenre().getDisplayName().equalsIgnoreCase(genre))
                 .map(MovieMapper::toDto).toList();
 
         if (filtered.isEmpty()) {
@@ -42,6 +43,7 @@ public class MovieService {
         return filtered;
 
     }
+
     public List<MovieDto> getMoviesByTitle(String title) {
         List<MovieDto> filtered = movieRepository.findAll().stream()
                 .filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase()))
@@ -95,7 +97,7 @@ public class MovieService {
         existing.setTitle(dto.getTitle());
         existing.setDescription(dto.getDescription());
         existing.setReleaseDate(dto.getReleaseDate());
-        existing.setGenre(dto.getGenre());
+        existing.setGenre(Genre.valueOf(dto.getGenre().toUpperCase().replace(" ", "_")));
         existing.setLanguage(dto.getLanguage());
         existing.setImageUrl(dto.getImageUrl());
         existing.setAgeRating(dto.getAgeRating());
@@ -106,7 +108,6 @@ public class MovieService {
     }
 
 
-
     //Admin Method
     public void deleteMovie(Long id) {
         Movie movie = movieRepository.findById(id)
@@ -114,8 +115,6 @@ public class MovieService {
 
         movieRepository.delete(movie);
     }
-
-
 
 
     //Business-Logik

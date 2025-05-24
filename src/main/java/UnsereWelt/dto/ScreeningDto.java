@@ -14,12 +14,16 @@ import java.time.LocalTime;
 @ToString
 public class ScreeningDto {
 
-    @NotBlank(message = "Movie title cannot be blank")
-    private String movieTitle;
+    private Long id;
+
+    @NotNull(message = "Movie ID must not be null")
+    private Long movieId;
 
     @NotNull(message = "Date must be provided")
-    @FutureOrPresent(message = "Date cannot be in the past")
+    @FutureOrPresent(message = "Date must be today or in the future")
     private LocalDate date;
+    @NotBlank(message = "Hall must be provided")
+    private String hall;
 
     @NotNull(message = "Start time must be provided")
     private LocalTime startTime;

@@ -1,5 +1,6 @@
 package UnsereWelt.entity;
 
+import UnsereWelt.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,6 @@ public class User {
 
     @Column(nullable = false, length = 255)
     private String password;
-
+    private Role role;
 
 }

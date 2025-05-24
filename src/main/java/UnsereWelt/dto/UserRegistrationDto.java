@@ -1,15 +1,15 @@
 package UnsereWelt.dto;
 
-import UnsereWelt.enums.Role;
-import lombok.*;
 import jakarta.validation.constraints.*;
+
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserDto {
+public class UserRegistrationDto {
 
     @NotBlank(message = "Name cannot be blank")
     private String name;
@@ -20,6 +20,4 @@ public class UserDto {
 
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
-
-    private Role role; // ✅ Rolle hinzufügen
 }
