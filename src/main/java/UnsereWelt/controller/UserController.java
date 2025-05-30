@@ -45,20 +45,19 @@ public class UserController {
                             loginDto.getEmail(), loginDto.getPassword()
                     )
             );
-            // Benutzer laden
+
             User user = userRepository.findByEmail(loginDto.getEmail())
                     .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
 
-            // ✅ Token erzeugen
             String token = jwtService.generateToken(user);
 
-            return ResponseEntity.ok(token); // Token an Frontend zurückgeben
+            return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login fehlgeschlagen");
         }
     }
 
-    // ✅ User registrieren
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid UserRegistrationDto registrationDto) {
         try {
@@ -69,14 +68,14 @@ public class UserController {
         }
     }
 
-    // ✅ Admin registrieren
+
     @PostMapping("/register-admin")
     public ResponseEntity<UserDto> registerAdmin(@RequestBody @Valid UserRegistrationDto registrationDto) {
         UserDto adminUser = userService.registerAdmin(registrationDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(adminUser);
     }
 
-    // ✅ Benutzer anhand der E-Mail abrufen
+
     @GetMapping("/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
         return userService.findByEmail(email)

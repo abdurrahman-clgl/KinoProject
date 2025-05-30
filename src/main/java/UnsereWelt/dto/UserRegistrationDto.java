@@ -1,5 +1,6 @@
 package UnsereWelt.dto;
 
+import UnsereWelt.enums.Role;
 import jakarta.validation.constraints.*;
 
 import lombok.*;
@@ -18,6 +19,17 @@ public class UserRegistrationDto {
     @NotBlank(message = "Email cannot be blank")
     private String email;
 
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(
+            regexp = "^\\+?[0-9]{10,15}$",
+            message = "Phone number must be valid"
+    )
+    private String phone;
+
+    @Pattern(
+            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
+            message = "Password must be secure"
+    )
     private String password;
+
+    private Role role;
 }
