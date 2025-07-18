@@ -1,7 +1,7 @@
 package UnsereWelt.mapper;
 
-import UnsereWelt.dto.UserDto;
-import UnsereWelt.dto.UserRegistrationDto;
+import UnsereWelt.dto.user.UserDto;
+import UnsereWelt.dto.user.UserRegistrationDto;
 import UnsereWelt.entity.User;
 import org.springframework.stereotype.Component;
 

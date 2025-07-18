@@ -1,6 +1,6 @@
 package UnsereWelt.service;
 
-import UnsereWelt.dto.MovieDto;
+import UnsereWelt.dto.movie.MovieDto;
 import UnsereWelt.entity.Movie;
 import UnsereWelt.enums.Genre;
 import UnsereWelt.mapper.MovieMapper;

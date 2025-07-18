@@ -41,7 +41,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/login", "/api/users/register-admin").permitAll()
+
+
+                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/register-admin").permitAll()
 
                         // Filme
                         .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
@@ -54,6 +58,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/screenings/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/screenings/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/screenings/**").hasRole("ADMIN")
+
+                        .requestMatchers("/api/bookings/**").hasAnyRole("USER", "ADMIN")
+
 
                         .anyRequest().authenticated()
                 )

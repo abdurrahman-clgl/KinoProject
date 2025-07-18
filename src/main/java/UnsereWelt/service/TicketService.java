@@ -1,11 +1,13 @@
 package UnsereWelt.service;
 
-import UnsereWelt.dto.TicketDto;
+import UnsereWelt.dto.seat.TicketDto;
 import UnsereWelt.entity.Booking;
+import UnsereWelt.entity.Screening;
 import UnsereWelt.entity.Seat;
 import UnsereWelt.entity.Ticket;
 import UnsereWelt.mapper.TicketMapper;
 import UnsereWelt.repository.BookingRepository;
+import UnsereWelt.repository.ScreeningRepository;
 import UnsereWelt.repository.SeatRepository;
 import UnsereWelt.repository.TicketRepository;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,16 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final BookingRepository bookingRepository;
     private final SeatRepository seatRepository;
+    private final ScreeningRepository screeningRepository;
 
     public TicketService(TicketRepository ticketRepository,
                          BookingRepository bookingRepository,
-                         SeatRepository seatRepository) {
+                         SeatRepository seatRepository,
+                         ScreeningRepository screeningRepository) {
         this.ticketRepository = ticketRepository;
         this.bookingRepository = bookingRepository;
         this.seatRepository = seatRepository;
+        this.screeningRepository = screeningRepository;
     }
 
     public TicketDto createTicket(TicketDto dto) {
@@ -36,9 +41,10 @@ public class TicketService {
                 .orElseThrow(() -> new IllegalArgumentException("Seat not found"));
 
 
-        boolean seatTaken = ticketRepository.existsBySeatIdAndBooking_Screening_Id(
-                seat.getId(), booking.getScreening().getId()
+        boolean seatTaken = ticketRepository.existsByScreeningAndSeat(
+                booking.getScreening(), seat
         );
+
 
         if (seatTaken) {
             throw new IllegalStateException("This seat is already booked for the selected screening.");
@@ -56,8 +62,11 @@ public class TicketService {
                 .collect(Collectors.toList());
     }
     public boolean isSeatTaken(Long seatId, Long screeningId) {
-        return ticketRepository.existsBySeatIdAndBooking_Screening_Id(seatId, screeningId);
+        Seat seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new IllegalArgumentException("Seat not found"));
+        Screening screening = screeningRepository.findById(screeningId)
+                .orElseThrow(() -> new IllegalArgumentException("Screening not found"));
+        return ticketRepository.existsByScreeningAndSeat(screening, seat);
     }
-
 
 }

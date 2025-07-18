@@ -1,6 +1,6 @@
 package UnsereWelt.mapper;
 
-import UnsereWelt.dto.ScreeningDto;
+import UnsereWelt.dto.movie.ScreeningDto;
 import UnsereWelt.entity.Screening;
 
 public class ScreeningMapper {

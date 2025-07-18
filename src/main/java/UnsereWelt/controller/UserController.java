@@ -1,8 +1,8 @@
 package UnsereWelt.controller;
 
-import UnsereWelt.dto.LoginDto;
-import UnsereWelt.dto.UserDto;
-import UnsereWelt.dto.UserRegistrationDto;
+import UnsereWelt.dto.user.LoginDto;
+import UnsereWelt.dto.user.UserDto;
+import UnsereWelt.dto.user.UserRegistrationDto;
 import UnsereWelt.entity.User;
 import UnsereWelt.repository.UserRepository;
 import UnsereWelt.security.filter.JwtService;

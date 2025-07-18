@@ -1,6 +1,6 @@
 package UnsereWelt.mapper;
 
-import UnsereWelt.dto.SeatDto;
+import UnsereWelt.dto.seat.SeatDto;
 import UnsereWelt.entity.Seat;
 
 public class SeatMapper {

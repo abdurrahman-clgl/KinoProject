@@ -1,4 +1,4 @@
-package UnsereWelt.dto;
+package UnsereWelt.dto.user;
 
 import UnsereWelt.enums.Role;
 import jakarta.validation.constraints.*;

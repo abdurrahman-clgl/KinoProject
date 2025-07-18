@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -26,4 +28,13 @@ public class Seat {
     @NotNull(message = "Category cannot be null")
     @Enumerated(EnumType.STRING)
     private SeatCategory category;
+
+    public String getLabel() {
+        return rowLabel + seatNumber;
+    }
+
+    public BigDecimal getPrice() {
+        return category.getPrice();
+    }
+
 }

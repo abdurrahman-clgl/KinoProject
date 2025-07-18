@@ -1,10 +1,12 @@
-package UnsereWelt.dto;
+package UnsereWelt.dto.booking;
 
+import UnsereWelt.dto.seat.TicketDto;
 import UnsereWelt.enums.BookingStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,4 +28,5 @@ public class BookingDto {
     // Optional (nur zur Anzeige – keine Validierung nötig)
     private String userName;
     private String movieTitle;
+    private List<TicketDto> tickets;
 }

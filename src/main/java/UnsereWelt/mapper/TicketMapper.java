@@ -1,6 +1,6 @@
 package UnsereWelt.mapper;
 
-import UnsereWelt.dto.TicketDto;
+import UnsereWelt.dto.seat.TicketDto;
 import UnsereWelt.entity.Booking;
 import UnsereWelt.entity.Seat;
 import UnsereWelt.entity.Ticket;

@@ -1,4 +1,4 @@
-package UnsereWelt.dto;
+package UnsereWelt.dto.movie;
 
 import UnsereWelt.enums.AgeRating;
 import UnsereWelt.enums.Language;

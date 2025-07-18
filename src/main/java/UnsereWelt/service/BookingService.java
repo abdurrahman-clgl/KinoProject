@@ -1,17 +1,16 @@
 package UnsereWelt.service;
 
-import UnsereWelt.dto.BookingDto;
-import UnsereWelt.entity.Booking;
-import UnsereWelt.entity.Screening;
-import UnsereWelt.entity.User;
+import UnsereWelt.dto.booking.BookingDto;
+import UnsereWelt.dto.booking.BookingRequestDto;
+import UnsereWelt.dto.seat.TicketDto;
+import UnsereWelt.entity.*;
 import UnsereWelt.enums.BookingStatus;
 import UnsereWelt.mapper.BookingMapper;
-import UnsereWelt.repository.BookingRepository;
-import UnsereWelt.repository.ScreeningRepository;
-import UnsereWelt.repository.UserRepository;
+import UnsereWelt.repository.*;
+
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,30 +20,63 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ScreeningRepository screeningRepository;
+    private final SeatRepository seatRepository;
+    private final TicketRepository ticketRepository;
 
     public BookingService(BookingRepository bookingRepository,
                           UserRepository userRepository,
-                          ScreeningRepository screeningRepository) {
+                          ScreeningRepository screeningRepository,
+                          SeatRepository seatRepository,
+                          TicketRepository ticketRepository) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.screeningRepository = screeningRepository;
+        this.seatRepository = seatRepository;
+        this.ticketRepository = ticketRepository;
     }
 
-    // 1. Neue Buchung erstellen
-    public BookingDto createBooking(BookingDto dto) {
+    // 1. Neue Buchung erstellen (angepasst!)
+    public BookingDto createBooking(BookingRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Screening screening = screeningRepository.findById(dto.getScreeningId())
                 .orElseThrow(() -> new IllegalArgumentException("Screening not found"));
 
-        dto.setBookingTime(LocalDateTime.now());
-        dto.setStatus(BookingStatus.CONFIRMED);
+        List<Seat> seats = seatRepository.findAllById(dto.getSeatIds());
+
+        for (Seat seat : seats) {
+            if (ticketRepository.existsByScreeningAndSeat(screening, seat)) {
+                throw new IllegalStateException("Seat already booked: " + seat.getId());
+            }
+        }
 
         Booking booking = BookingMapper.toEntity(dto, user, screening);
         booking = bookingRepository.save(booking);
 
-        return BookingMapper.toDto(booking);
+        List<TicketDto> ticketDtos = new ArrayList<>();
+
+        for (Seat seat : seats) {
+            Ticket ticket = new Ticket();
+            ticket.setBooking(booking);
+            ticket.setSeat(seat);
+            ticket.setScreening(screening);
+            ticket.setPrice(seat.getPrice()); // oder berechnet
+            Ticket saved = ticketRepository.save(ticket);
+
+            ticketDtos.add(new TicketDto(
+                    saved.getId(),
+                    booking.getId(),
+                    seat.getId(),
+                    saved.getPrice(),
+                    seat.getLabel()
+            ));
+        }
+
+        BookingDto response = BookingMapper.toDto(booking);
+        response.setTickets(ticketDtos);
+
+        return response;
     }
 
     // 2. Buchungen eines Benutzers abrufen

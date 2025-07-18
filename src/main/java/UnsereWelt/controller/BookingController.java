@@ -1,6 +1,7 @@
 package UnsereWelt.controller;
 
-import UnsereWelt.dto.BookingDto;
+import UnsereWelt.dto.booking.BookingDto;
+import UnsereWelt.dto.booking.BookingRequestDto;
 import UnsereWelt.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class BookingController {
 
 
     @PostMapping
-    public ResponseEntity<BookingDto> createBooking(@RequestBody @Valid BookingDto dto) {
-        BookingDto savedBooking = bookingService.createBooking(dto);
+    public ResponseEntity<BookingDto> createBooking(@RequestBody @Valid BookingRequestDto request) {
+        BookingDto savedBooking = bookingService.createBooking(request);
         return ResponseEntity.ok(savedBooking);
     }
 

@@ -1,6 +1,6 @@
 package UnsereWelt.service;
 
-import UnsereWelt.dto.SeatDto;
+import UnsereWelt.dto.seat.SeatDto;
 import UnsereWelt.entity.Seat;
 import UnsereWelt.mapper.SeatMapper;
 import UnsereWelt.repository.SeatRepository;

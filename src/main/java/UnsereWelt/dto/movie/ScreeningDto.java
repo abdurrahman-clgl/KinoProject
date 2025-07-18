@@ -1,4 +1,4 @@
-package UnsereWelt.dto;
+package UnsereWelt.dto.movie;
 
 import lombok.*;
 import jakarta.validation.constraints.*;

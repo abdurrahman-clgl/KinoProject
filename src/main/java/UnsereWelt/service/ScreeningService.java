@@ -1,12 +1,11 @@
 package UnsereWelt.service;
 
-import UnsereWelt.dto.ScreeningDto;
+import UnsereWelt.dto.movie.ScreeningDto;
 import UnsereWelt.entity.Movie;
 import UnsereWelt.entity.Screening;
 import UnsereWelt.mapper.ScreeningMapper;
 import UnsereWelt.repository.MovieRepository;
 import UnsereWelt.repository.ScreeningRepository;
-import UnsereWelt.controller.ScreeningController;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

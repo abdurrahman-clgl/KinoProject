@@ -1,6 +1,6 @@
 package UnsereWelt.controller;
 
-import UnsereWelt.dto.ScreeningDto;
+import UnsereWelt.dto.movie.ScreeningDto;
 import UnsereWelt.service.ScreeningService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

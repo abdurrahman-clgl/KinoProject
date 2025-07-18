@@ -1,8 +1,7 @@
 package UnsereWelt.controller;
 
 
-import UnsereWelt.dto.MovieDto;
-import UnsereWelt.entity.Movie;
+import UnsereWelt.dto.movie.MovieDto;
 import UnsereWelt.service.MovieService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package UnsereWelt.dto;
+package UnsereWelt.dto.seat;
 
 import UnsereWelt.enums.SeatCategory;
 import jakarta.validation.constraints.Min;

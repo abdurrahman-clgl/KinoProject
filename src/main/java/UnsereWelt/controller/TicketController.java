@@ -1,6 +1,6 @@
 package UnsereWelt.controller;
 
-import UnsereWelt.dto.TicketDto;
+import UnsereWelt.dto.seat.TicketDto;
 import UnsereWelt.service.TicketService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

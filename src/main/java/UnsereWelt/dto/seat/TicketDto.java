@@ -1,4 +1,4 @@
-package UnsereWelt.dto;
+package UnsereWelt.dto.seat;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;

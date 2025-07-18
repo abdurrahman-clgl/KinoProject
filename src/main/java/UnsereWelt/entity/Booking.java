@@ -6,6 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
 @Getter
@@ -36,4 +38,6 @@ public class Booking {
    @JoinColumn(name = "screening_id", nullable = false)
    private Screening screening;
 
+   @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   private List<Ticket> tickets;
 }
